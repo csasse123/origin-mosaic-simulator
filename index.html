@@ -512,9 +512,42 @@ scene.add(wedgePivot);
 
 const wedgeVisual = new THREE.Group();
 wedgePivot.add(wedgeVisual);
-mesh(box(0.28, 0.016, 0.30), mat.charcoal, wedgeVisual, 0, 0.01, -0.09);
-mesh(box(0.012, 0.09, 0.28), mat.black, wedgeVisual,  0.13, 0.05, -0.08);
-mesh(box(0.012, 0.09, 0.28), mat.black, wedgeVisual, -0.13, 0.05, -0.08);
+// flat azimuth base plate that bolts to the tripod head (does not tilt)
+const wedgeBase = new THREE.Group();
+wedgeBase.position.set(0, headY + 0.050, 0.085);
+scene.add(wedgeBase);
+mesh(box(0.30, 0.016, 0.20), mat.charcoal, wedgeBase, 0, 0, -0.02);
+mesh(box(0.30, 0.008, 0.03), mat.black, wedgeBase, 0, 0.010, -0.108);
+mesh(cyl(0.040,0.046,0.028,20), mat.black, wedgeBase, 0, -0.020, -0.02);
+[-0.105, 0.105].forEach(x=>{                       // azimuth adjustment knobs
+  mesh(cyl(0.020,0.020,0.026,14), mat.blackSoft, wedgeBase, x, 0.020, -0.075);
+  mesh(box(0.052,0.016,0.018), mat.blackSoft, wedgeBase, x, 0.030, -0.075);
+});
+[-0.075, 0.075].forEach(x=>mesh(cyl(0.009,0.009,0.020,10), mat.metal, wedgeBase, x, 0.014, 0.02));
+// ---- Equatorial wedge #93665, modelled from reference photographs ----
+// Tilted platform that carries the mount base
+mesh(box(0.26, 0.014, 0.28), mat.charcoal, wedgeVisual, 0, 0.008, -0.09);
+mesh(box(0.22, 0.010, 0.06), mat.blackSoft, wedgeVisual, 0, 0.018, -0.20);
+// single latitude arc on the RIGHT side, with its dark-red scale strip
+(function(){
+  const arc=new THREE.Group(); wedgeVisual.add(arc);
+  arc.position.set(0.135, 0.02, -0.10);
+  mesh(new THREE.TorusGeometry(0.115, 0.012, 8, 28, Math.PI*0.62), mat.black, arc, 0, 0, 0, 0, Math.PI/2, -0.35);
+  mesh(box(0.010, 0.075, 0.16), mat.black, arc, 0, 0.03, -0.02);
+  mesh(box(0.013, 0.014, 0.115), mat.rubber, arc, 0.002, 0.052, -0.03);   // red scale strip
+  for(let i=0;i<5;i++)
+    mesh(cyl(0.006,0.006,0.016,8), mat.metal, arc, 0.004, 0.052, -0.075+i*0.024, 0,0,Math.PI/2);
+  mesh(cyl(0.013,0.013,0.022,14), mat.metal, arc, 0.004, -0.055, 0.055, 0,0,Math.PI/2); // pivot bolt
+})();
+// latitude adjuster: threaded rod with the black T-handle, rear right
+(function(){
+  const adj=new THREE.Group(); wedgeVisual.add(adj);
+  adj.position.set(0.145, -0.045, -0.215);
+  adj.rotation.z = 0.35;
+  mesh(cyl(0.007,0.007,0.13,10), mat.chrome, adj, 0, -0.05, 0);
+  mesh(cyl(0.020,0.020,0.020,16), mat.blackSoft, adj, 0, -0.115, 0);
+  mesh(box(0.062,0.016,0.020), mat.blackSoft, adj, 0, -0.121, 0);
+})();
 mesh(box(0.26, 0.014, 0.26), mat.blackSoft, wedgeVisual, 0, 0.085, -0.08);
 mesh(box(0.08, 0.07, 0.01), mat.metal, wedgeVisual, 0, 0.05, 0.06);
 mesh(cyl(0.028, 0.028, 0.045, 16), mat.orange, wedgeVisual, 0, 0.04, 0.095, Math.PI/2, 0, 0);
@@ -779,7 +812,7 @@ function applyKinematics() {
     wedgePivot.rotation.x = (90 - S.lat) * DEG;
     azGroup.rotation.y = (S.ha - 180) * DEG;
     altGroup.rotation.x = -S.dec * DEG;
-    wedgeVisual.visible = true;
+    wedgeVisual.visible = true; wedgeBase.visible = true;
     mountRoot.position.set(0, 0.092, -0.085);   // seated on the wedge plate
     ncpGroup.visible = true;
     const r = 3.4;
@@ -794,7 +827,7 @@ function applyKinematics() {
     // Unwrapped signed azimuth (west is negative). wrap360 would jump 0°↔360°.
     azGroup.rotation.y = S.azSigned * DEG;
     altGroup.rotation.x = -S.alt * DEG;
-    wedgeVisual.visible = false;
+    wedgeVisual.visible = false; wedgeBase.visible = false;
     mountRoot.position.set(0, 0.006, -0.085);   // seated directly on the tripod head
     ncpGroup.visible = false;
   }
@@ -1729,7 +1762,7 @@ function sky3CompassUpdate(L){
   });
 }
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 52</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 53</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
