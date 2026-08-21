@@ -1682,7 +1682,7 @@ const MOS={cols:6,rows:2,per:10,gap:10,failed:{},W:3.35,H:1.15,gridAbs:0,camAbs:
            tiles:[],roll0:0,endHA:0,mode:''};
 var sky3Photo=null;
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 46</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 47</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
@@ -2406,7 +2406,18 @@ function mosDraw(){
     if(p[0]<x0)x0=p[0]; if(p[0]>x1)x1=p[0]; if(p[1]<y0)y0=p[1]; if(p[1]>y1)y1=p[1];}));
   const sc=Math.min(W/Math.max(x1-x0,1e-6),H/Math.max(y1-y0,1e-6))*0.88;
   const mx=(x0+x1)/2,my=(y0+y1)/2;
-  const S2=p=>[W/2+(p[0]-mx)*sc, H/2-(p[1]-my)*sc];
+  // The panel is always a TRUE sky view: north up-ish, EAST LEFT, as an imager sees it.
+  // If the 3D camera happens to view the plate from behind, un-mirror the panel.
+  const _n=tgtDir(S.trackHA), _north=skyNorthAt(_n);
+  const _east=new THREE.Vector3().crossVectors(_n,_north).normalize();
+  const _c0=prj(L.plateC),
+        _pN=prj(L.plateC.clone().addScaledVector(_north,0.15)),
+        _pE=prj(L.plateC.clone().addScaledVector(_east,0.15));
+  const _dNx=_pN[0]-_c0[0],_dNy=_pN[1]-_c0[1],_dEx=_pE[0]-_c0[0],_dEy=_pE[1]-_c0[1];
+  MOS._viewMirrored=((_dEx*_dNy-_dEy*_dNx)>0);
+  const _fx=MOS._viewMirrored?-1:1;
+  const S2=p=>[W/2+_fx*(p[0]-mx)*sc, H/2-(p[1]-my)*sc];
+  const NE={nx:_fx*_dNx,ny:_dNy,ex:_fx*_dEx,ey:_dEy};
   const poly=(q,fill,stroke,lw,dash)=>{
     const s=q.map(S2);
     qx.beginPath();qx.moveTo(s[0][0],s[0][1]);
@@ -2445,6 +2456,19 @@ function mosDraw(){
     if(st==='recap'){qx.font='700 10px monospace';qx.fillText('R',c[0]+14,c[1]-8);}
   });
   poly(boxCor,null,'#FF7F00',3,[10,6]);
+  (function compass(){
+    const cx=W-64, cy=H-64, R=30;
+    const nn=Math.hypot(NE.nx,NE.ny)||1, ee=Math.hypot(NE.ex,NE.ey)||1;
+    const arm=(dx,dy,lab)=>{
+      const x=cx+dx*R, y=cy-dy*R;
+      qx.strokeStyle='rgba(255,255,255,.55)';qx.lineWidth=1.6;
+      qx.beginPath();qx.moveTo(cx,cy);qx.lineTo(x,y);qx.stroke();
+      qx.fillStyle='rgba(255,255,255,.85)';qx.font='700 11px "Segoe UI",sans-serif';
+      qx.textAlign='center';qx.fillText(lab,cx+dx*(R+10),y-dy*10+4);
+    };
+    arm(NE.nx/nn,NE.ny/nn,'N'); arm(NE.ex/ee,NE.ey/ee,'E');
+    qx.beginPath();qx.arc(cx,cy,2.5,0,7);qx.fillStyle='rgba(255,255,255,.7)';qx.fill();
+  })();
   if(cur){
     const ci=MOS.tiles.indexOf(cur);
     qx.save();qx.shadowColor='#4dff88';qx.shadowBlur=12;
