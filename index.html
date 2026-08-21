@@ -1682,7 +1682,7 @@ const MOS={cols:6,rows:2,per:10,gap:10,failed:{},W:3.35,H:1.15,gridAbs:0,camAbs:
            tiles:[],roll0:0,endHA:0,mode:''};
 var sky3Photo=null;
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 47</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 48</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
@@ -2409,13 +2409,13 @@ function mosDraw(){
   // The panel is always a TRUE sky view: north up-ish, EAST LEFT, as an imager sees it.
   // If the 3D camera happens to view the plate from behind, un-mirror the panel.
   const _n=tgtDir(S.trackHA), _north=skyNorthAt(_n);
-  const _east=new THREE.Vector3().crossVectors(_n,_north).normalize();
+  const _east=new THREE.Vector3().crossVectors(_north,_n).normalize();
   const _c0=prj(L.plateC),
         _pN=prj(L.plateC.clone().addScaledVector(_north,0.15)),
         _pE=prj(L.plateC.clone().addScaledVector(_east,0.15));
   const _dNx=_pN[0]-_c0[0],_dNy=_pN[1]-_c0[1],_dEx=_pE[0]-_c0[0],_dEy=_pE[1]-_c0[1];
-  MOS._viewMirrored=((_dEx*_dNy-_dEy*_dNx)>0);
-  const _fx=MOS._viewMirrored?-1:1;
+  MOS._viewMirrored=false;
+  const _fx=1;   // never flip: the 3D view is already a true sky view
   const S2=p=>[W/2+_fx*(p[0]-mx)*sc, H/2-(p[1]-my)*sc];
   const NE={nx:_fx*_dNx,ny:_dNy,ex:_fx*_dEx,ey:_dEy};
   const poly=(q,fill,stroke,lw,dash)=>{
