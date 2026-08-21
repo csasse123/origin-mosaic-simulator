@@ -1559,6 +1559,7 @@ function startPlay(){
   if(S.playing) return;
   S.playing=true;
   beginPlayFromView();
+  if(typeof window.__setDock==='function') window.__setDock(false);   // presentation mode
   syncUI();
 }
 function pausePlay(){
@@ -1570,6 +1571,7 @@ function pausePlay(){
 function stopPlay(){
   S.playing=false;
   FOLLOW.locked=false;
+  if(typeof window.__setDock==='function') window.__setDock(true);   // Stop brings the controls back
   if(S.locked && MOS.tgt>=0 && typeof applyTarget==='function'){
     applyTarget(MOS.tgt);
     return;
@@ -1680,7 +1682,7 @@ const MOS={cols:6,rows:2,per:10,gap:10,failed:{},W:3.35,H:1.15,gridAbs:0,camAbs:
            tiles:[],roll0:0,endHA:0,mode:''};
 var sky3Photo=null;
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 45</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 46</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
@@ -2019,6 +2021,7 @@ document.head.appendChild(MC);
     if(typeof applyViewOffset==='function' && FOLLOW && FOLLOW.on) applyViewOffset();
     window.dispatchEvent(new Event('resize'));
   }
+  window.__setDock=setDock;
   tog.onclick=()=>setDock(false);
   document.getElementById('mb-expand').onclick=()=>setDock(true);
   document.getElementById('mb-play').onclick=()=>startPlay();
