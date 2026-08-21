@@ -308,7 +308,7 @@ const OBST_R = 0.070 / 2;
 const TRIPOD_HEAD_Y = 0.72;
 const WEDGE_H = 0.055;
 const BASE_H = 0.105;
-const FORK_X = -0.145;
+const FORK_X = 0.145;   // arm on the LEFT when standing behind the OTA (matches hardware)
 
 const mat = {
   white: new THREE.MeshStandardMaterial({ color: 0xf3efe6, metalness: 0.18, roughness: 0.42 }),
@@ -1681,8 +1681,38 @@ const clock = new THREE.Clock();
 const MOS={cols:6,rows:2,per:10,gap:10,failed:{},W:3.35,H:1.15,gridAbs:0,camAbs:0,camOff:0,startHA:-22,FX:1.3174,FY:0.7448,P:0.59654,frame:0.92,pad:1,
            tiles:[],roll0:0,endHA:0,mode:''};
 var sky3Photo=null;
+var sky3Compass=null;
+function makeSkyLabel(txt,col){
+  const c=document.createElement('canvas'); c.width=128; c.height=128;
+  const x=c.getContext('2d');
+  x.fillStyle=col; x.font='700 76px "Segoe UI",sans-serif';
+  x.textAlign='center'; x.textBaseline='middle'; x.fillText(txt,64,68);
+  const tx=new THREE.CanvasTexture(c); tx.colorSpace=THREE.SRGBColorSpace;
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false,fog:false}));
+  s.renderOrder=20; return s;
+}
+function sky3CompassUpdate(L){
+  if(!sky3D.visible) return;
+  if(!sky3Compass){
+    sky3Compass=new THREE.Group(); sky3Compass.renderOrder=20; sky3D.add(sky3Compass);
+    ['N','E','S','W'].forEach(t=>{
+      const main=(t==='N'||t==='E');
+      const s=makeSkyLabel(t, main?'#FF7F00':'rgba(255,255,255,.75)');
+      s.userData.tag=t; sky3Compass.add(s);
+    });
+  }
+  const n=L.n, north=skyNorthAt(n);
+  const east=new THREE.Vector3().crossVectors(north,n).normalize();
+  const R=Math.max(MOS.W,MOS.H)*0.72+0.55, sc=L.scale;
+  const dirs={N:north, S:north.clone().negate(), E:east, W:east.clone().negate()};
+  sky3Compass.children.forEach(s=>{
+    const d=dirs[s.userData.tag];
+    s.position.copy(L.plateC).addScaledVector(d, R*sc);
+    s.scale.setScalar(0.30*sc*Math.max(1,Math.max(MOS.W,MOS.H)));
+  });
+}
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 49</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 51</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
@@ -2223,6 +2253,11 @@ function tgtKey(t){
   if(!m) return '';
   return m[1].replace(/\s+/g,'');
 }
+const DSO_PA={M31:35, M33:23, NGC1499:20, M42:0, M81:157, M82:65, M63:105, M51:170,
+  M101:40, M27:25, NGC6888:75, NGC7000:0, NGC55:108, NGC253:52, NGC300:111,
+  NGC1365:32, NGC2736:30, NGC4945:43, NGC5128:35, M83:45, NGC6995:60, NGC6960:0,
+  SMC:45, LMC:170};
+function objectPA(t){ const p=DSO_PA[tgtKey(t)]; return (p==null)?0:p; }
 function objectSpan(t){
   const k=tgtKey(t);
   if(k==='VEIL') return {aw:MOS.W, ah:MOS.H, kind:'neb', key:k};
@@ -2402,7 +2437,8 @@ function mosDraw(){
     const t=MOS.tgt>=0?TGT[MOS.tgt]:null;
     if(!t||!MOS.skyCanvas) return;
     const sp=objectSpan(t);
-    qx.save();qx.translate(X(0),Y(0));qx.rotate(thB*DEG);
+    // object sits at its true position angle on the sky; the box turns over it
+    qx.save();qx.translate(X(0),Y(0));qx.rotate((thB+objectPA(t))*DEG);
     qx.drawImage(MOS.skyCanvas,-sp.aw*kk/2,-sp.ah*kk/2,sp.aw*kk,sp.ah*kk);
     qx.restore();
   })();
@@ -2798,11 +2834,16 @@ function sky3Update(){
     sky3Fill.quaternion.setFromRotationMatrix(
       new THREE.Matrix4().lookAt(sky3Fill.position, sky3Fill.position.clone().add(look), upG));
   }
+  sky3CompassUpdate(L);
   if(sky3Photo && sky3Fill){
     const span=objectSpan(MOS.tgt>=0?TGT[MOS.tgt]:null);
     sky3Photo.position.copy(plateC);
     sky3Photo.scale.set(span.aw*scale, span.ah*scale, 1);
     sky3Photo.quaternion.copy(sky3Fill.quaternion);
+    if(MOS.tgt>=0){
+      const pa=objectPA(TGT[MOS.tgt]);
+      if(pa) sky3Photo.rotateZ(-pa*DEG);   // true sky PA, independent of the box
+    }
     sky3Photo.visible = MOS.tgt>=0;
   }
 }
