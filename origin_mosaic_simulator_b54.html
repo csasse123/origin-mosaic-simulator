@@ -716,7 +716,7 @@ const ncpGroup = new THREE.Group();
 scene.add(ncpGroup);
 const ncpBall = mesh(new THREE.SphereGeometry(0.045, 20, 16), mat.ncp, ncpGroup);
 ncpBall.castShadow = false;
-const ncpLab = makeLabel('NCP', '#ffe08a', 256, 128);
+const ncpLab = makeLabel('North', '#ffe08a', 256, 128);
 ncpLab.scale.set(1.6, 1.6, 1);
 ncpGroup.add(ncpLab);
 const ncpLineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(0,1,0)]);
@@ -796,7 +796,7 @@ const el = {
 
 const CAP = {
   altaz: 'Alt-az mode: wedge hidden and flat. The cyan azimuth axis is vertical. azGroup rotates about +Y (0° = north, 90° = east, −90° = west). Through zenith the azimuth axis rolls ~180° continuously (through north); that roll is field rotation and matches the 678C frame. altGroup tips the RASA 0–90° about the orange east–west axis. Optical +X (green) aims at the front camera. Both motors track a Dec = φ galaxy.',
-  eq: 'Equatorial mode: wedge #93665 sits between tripod and mount and tilts about East by (90° − φ) so the former vertical axis points at the NCP (alt = latitude, az = north). azGroup is now hour angle / RA (0 h = southern meridian, +HA = west). altGroup is declination. Sidereal tracking moves RA only — the chip stays north-up with no field rotation.',
+  eq: 'Equatorial mode: wedge #93665 sits between tripod and mount and tilts about East by (90° − φ) so the former vertical axis points at the celestial pole (alt = latitude, az = north). azGroup is now hour angle / RA (0 h = southern meridian, +HA = west). altGroup is declination. Sidereal tracking moves RA only — the chip stays north-up with no field rotation.',
 };
 
 const DEMO_HA_RATE = 0.8;
@@ -1762,7 +1762,7 @@ function sky3CompassUpdate(L){
   });
 }
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 53</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 54</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
