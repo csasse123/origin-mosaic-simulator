@@ -4,7 +4,7 @@ An interactive simulation of how Celestron Origin plans and captures a mosaic.
 
 **Live:** https://csasse123.github.io/origin-mosaic-simulator/
 
-Or download `origin_mosaic_simulator_b51.html` and open it in any browser.
+Or download `origin_mosaic_simulator_b52.html` and open it in any browser.
 Single self-contained file — no install, no build step, no network access needed.
 
 ## Using it

@@ -486,6 +486,8 @@ tripod.add(head);
 mesh(cyl(0.095, 0.11, 0.045, 24), mat.charcoal, head, 0, 0, 0);
 mesh(cyl(0.055, 0.055, 0.03, 16), mat.metal, head, 0, 0.03, 0);
 mesh(box(0.16, 0.018, 0.16), mat.black, head, 0, 0.042, 0);
+mesh(cyl(0.086, 0.096, 0.030, 28), mat.black, head, 0, 0.066, 0);      // seating collar
+mesh(new THREE.TorusGeometry(0.088, 0.005, 8, 28), mat.charcoal, head, 0, 0.080, 0, Math.PI/2, 0, 0);
 
 for (let i = 0; i < 3; i++) {
   const a = i * 120 * DEG;
@@ -540,6 +542,19 @@ mesh(cyl(0.008, 0.008, 0.09, 8), mat.metal, azGroup, 0.0, BASE_H + 0.02, -0.12, 
 mesh(cyl(0.008, 0.008, 0.03, 8), mat.metal, azGroup, -0.045, BASE_H + 0.008, -0.12);
 mesh(cyl(0.008, 0.008, 0.03, 8), mat.metal, azGroup,  0.045, BASE_H + 0.008, -0.12);
 mesh(new THREE.TorusGeometry(0.10, 0.004, 8, 32), mat.orange, azGroup, 0, BASE_H + 0.01, 0, Math.PI/2, 0, 0);
+// orange band around the lower drum (photo: bright ring just above the tripod head)
+mesh(cyl(0.1465, 0.1465, 0.012, 36), mat.orange, azGroup, 0, 0.026, 0);
+mesh(cyl(0.150, 0.150, 0.020, 36), mat.black,  azGroup, 0, 0.010, 0);
+// recessed dark top face
+mesh(cyl(0.106, 0.106, 0.006, 32), mat.blackSoft, azGroup, 0, BASE_H + 0.012, 0);
+// carry handle: a flat loop over the top of the base
+(function(){
+  const hG=new THREE.Group(); azGroup.add(hG);
+  hG.position.set(0, BASE_H + 0.016, 0);
+  mesh(new THREE.TorusGeometry(0.088, 0.008, 10, 40, Math.PI*1.15), mat.blackSoft, hG, 0, 0.006, 0, Math.PI/2, 0, -0.6);
+  mesh(box(0.020, 0.014, 0.030), mat.blackSoft, hG,  0.083, 0.002,  0.030);
+  mesh(box(0.020, 0.014, 0.030), mat.blackSoft, hG, -0.083, 0.002, -0.030);
+})();
 
 const fork = new THREE.Group();
 azGroup.add(fork);
@@ -765,6 +780,7 @@ function applyKinematics() {
     azGroup.rotation.y = (S.ha - 180) * DEG;
     altGroup.rotation.x = -S.dec * DEG;
     wedgeVisual.visible = true;
+    mountRoot.position.set(0, 0.092, -0.085);   // seated on the wedge plate
     ncpGroup.visible = true;
     const r = 3.4;
     const dir = new THREE.Vector3(0, Math.sin(latR), Math.cos(latR));
@@ -779,6 +795,7 @@ function applyKinematics() {
     azGroup.rotation.y = S.azSigned * DEG;
     altGroup.rotation.x = -S.alt * DEG;
     wedgeVisual.visible = false;
+    mountRoot.position.set(0, 0.006, -0.085);   // seated directly on the tripod head
     ncpGroup.visible = false;
   }
   azAxis.visible = altAxis.visible = optAxis.visible = !!S.showAxes;
@@ -1712,7 +1729,7 @@ function sky3CompassUpdate(L){
   });
 }
 const MP=document.createElement('div');MP.id='mosview';
-MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 51</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
+MP.innerHTML='<div class="mv-bar" id="mv-bar"><h1>Mosaic field \u00b7 panel by panel \u00b7 build 52</h1>'+'<button type="button" class="mv-btn" id="mv-zin" title="Zoom in">+</button>'+'<button type="button" class="mv-btn" id="mv-zout" title="Zoom out">\u2212</button>'+'<button type="button" class="mv-btn" id="mv-z1" title="Reset zoom">1</button></div>'
  +'<div class="qh"><canvas id="q-cv" width="1160" height="820"></canvas></div>'
  +'<div class="qmet"><span id="q-n">0 / 12</span><span id="q-roll">roll 0.0\u00b0</span>'
  +'<span id="q-sw">swing 0.0\u00b0</span></div>'
