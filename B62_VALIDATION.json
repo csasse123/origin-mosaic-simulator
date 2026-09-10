@@ -1,0 +1,362 @@
+{
+  "version": "B62",
+  "artifact_sha256": "98c1f7be98151f742126e08ecb4ec6d3db3b2dffec5d3c3c099040a1651a2e61",
+  "artifact_bytes": 21549493,
+  "validation": {
+    "math_and_optics": {
+      "artifactSHA256": "09091cf38af17f21f73d5cc60a3f3c9aee2ba4107deb623fdfbde0b40a690f7e",
+      "checks": 22,
+      "errors": [],
+      "remote": [],
+      "results": [
+        {
+          "name": "b55 reproduces multiple visible 3D tiles",
+          "pass": true,
+          "count": 12
+        },
+        {
+          "name": "34 original calculation, planning, preset and state functions unchanged",
+          "pass": true,
+          "functions": [
+            "wrap360",
+            "wrap180",
+            "horizFromHA",
+            "azSignedFromHA",
+            "haForAlt",
+            "sphOffset",
+            "mosaicNE",
+            "panelSky",
+            "mosBuild",
+            "mosaicGridPA",
+            "mosStepDeg",
+            "curTile",
+            "chipRollRadAt",
+            "chipRollDegUnwrapped",
+            "otaWorldQuatAt",
+            "chipRollAroundOptical",
+            "originOrient",
+            "loadRun",
+            "applyTarget",
+            "tileState",
+            "failCurrentTile",
+            "recaptureFailed",
+            "speedAtHA",
+            "accelAtHA",
+            "trackLimits",
+            "riseHA",
+            "applyKinematics",
+            "pointingReadout",
+            "ncpDir",
+            "measureChipRollFromOTA",
+            "updateChipRollFromOTA",
+            "haForAltDec",
+            "haForAzDec",
+            "equatorialFromHoriz"
+          ]
+        },
+        {
+          "name": "16 complete plan snapshots match b55 bit for bit",
+          "pass": true
+        },
+        {
+          "name": "Exactly one visible 3D tile at every Andromeda capture",
+          "pass": true,
+          "count": 15
+        },
+        {
+          "name": "Single 3D tile throughout 20-tile equatorial Veil run",
+          "pass": true
+        },
+        {
+          "name": "Failure and recapture preserve single-footprint display",
+          "pass": true
+        },
+        {
+          "name": "Field-of-view visibility control",
+          "pass": true
+        },
+        {
+          "name": "Catalogue coordinates agree with independent spherical transform",
+          "pass": true,
+          "max": 1.3922125900994122e-15,
+          "count": 5070,
+          "names": true,
+          "both": true
+        },
+        {
+          "name": "400 independent surface, reflection, Snell-law, image-plane and camera-facing checks",
+          "pass": true,
+          "reflection": 9.063162369069397e-16,
+          "snell": 2.7755575615628914e-16,
+          "residual": 8.962230957365591e-11,
+          "scaleError": 7.40298478431398e-7,
+          "number": 400,
+          "paths": 3,
+          "sensor": {
+            "width": 0.007712,
+            "height": 0.00436,
+            "widthSegments": 1,
+            "heightSegments": 1
+          }
+        },
+        {
+          "name": "Detailed camera explodes while sensor, window and ray trace stay aligned",
+          "pass": true
+        },
+        {
+          "name": "Ray pause and single-step",
+          "pass": true
+        },
+        {
+          "name": "Exploded parts separate and image/rays pause",
+          "pass": true
+        },
+        {
+          "name": "Filter drawer extracts and optical image pauses",
+          "pass": true
+        },
+        {
+          "name": "Camera and lens housing cutaway control",
+          "pass": true
+        },
+        {
+          "name": "Sensor camera preset renders",
+          "pass": true
+        },
+        {
+          "name": "Image preview advances with current tile",
+          "pass": true
+        },
+        {
+          "name": "Sensor GBRG and stacking controls",
+          "pass": true
+        },
+        {
+          "name": "All telescope geometry contains finite vertices",
+          "pass": true,
+          "vertices": 567438
+        },
+        {
+          "name": "Return from sky/optics restores single-tile view",
+          "pass": true
+        },
+        {
+          "name": "Desktop and small laptop control panels fit",
+          "pass": true
+        },
+        {
+          "name": "Sources dialog opens and closes by keyboard",
+          "pass": true
+        },
+        {
+          "name": "Offline browser run: no remote requests, no script or WebGL errors",
+          "pass": true
+        }
+      ]
+    },
+    "hardware": {
+      "artifactSHA256": "09091cf38af17f21f73d5cc60a3f3c9aee2ba4107deb623fdfbde0b40a690f7e",
+      "checks": [
+        {
+          "name": "Telescope view shows the complete opaque Alt-Az instrument",
+          "passed": true
+        },
+        {
+          "name": "Adjustable tube transparency leaves the camera housing opaque",
+          "passed": true
+        },
+        {
+          "name": "Remove shell preserves optical positions, camera assembly, rail and mosaic plan",
+          "passed": true
+        },
+        {
+          "name": "Dew shield removes independently of the front cell and camera",
+          "passed": true
+        },
+        {
+          "name": "Exterior, camera, fork and wedge geometry are finite; rail is on the fork side",
+          "passed": true,
+          "vertices": 789155,
+          "pivot": 0.374,
+          "rail": [
+            -0.061,
+            0,
+            -0.103
+          ]
+        },
+        {
+          "name": "24 mount states: vertical Alt-Az axis, polar equatorial axis, RA motion and sensor facing",
+          "passed": true,
+          "pole": 2.220446049250313e-16,
+          "RA": 8.881784197001252e-16,
+          "normalAlt": 0,
+          "sensor": 4.881468108401572e-16,
+          "configurations": 24
+        },
+        {
+          "name": "User mount and latitude controls update the physical wedge and restore the flat base",
+          "passed": true
+        },
+        {
+          "name": "Opaque restores the complete telescope after camera dissection",
+          "passed": true
+        },
+        {
+          "name": "Three-element optical diagram and detailed front optics remain available",
+          "passed": true
+        },
+        {
+          "name": "Twenty-six embedded hardware references open and close without network access",
+          "passed": true
+        },
+        {
+          "name": "Hardware controls fit both laptop sizes",
+          "passed": true
+        },
+        {
+          "name": "No JavaScript, WebGL or remote-request errors",
+          "passed": true
+        }
+      ],
+      "errors": [],
+      "remote": []
+    },
+    "accessories": {
+      "artifactSHA256": "09091cf38af17f21f73d5cc60a3f3c9aee2ba4107deb623fdfbde0b40a690f7e",
+      "checks": [
+        {
+          "name": "SSAG mesh body agrees with the published 185.42 × 58.42 mm envelope",
+          "passed": true,
+          "length": 0.18542000651359558,
+          "diameter": 0.05842000135873892
+        },
+        {
+          "name": "Both cable meshes meet their plug exits; SSAG stays parallel in 24 mount states",
+          "passed": true,
+          "axisError": 6.473657049138938e-16,
+          "plugError": 2.5296051550047473e-16,
+          "ringError": 3.985993248345164e-9,
+          "states": 24,
+          "tubeClearance": 0.01403129475671316
+        },
+        {
+          "name": "Rigid castings, shared hinge, constant rod length, clear base and latitude pointer at 15 latitudes",
+          "passed": true,
+          "hingeError": 1.1102230246251565e-16,
+          "swivelError": 1.3092278833360675e-16,
+          "lengthError": 5.551115123125783e-17,
+          "pointerError": 2.842170943040401e-14,
+          "baseClearance": 0.02176672852746667,
+          "latitudes": 15
+        },
+        {
+          "name": "SSAG and its lead can be removed and restored in all six mount/shell combinations",
+          "passed": true
+        },
+        {
+          "name": "Both SSAG and wiring presets render in each mount; all four socket labels are visible",
+          "passed": true
+        },
+        {
+          "name": "All six additional hardware references are included in the offline gallery",
+          "passed": true
+        },
+        {
+          "name": "Accessory and wedge browser checks complete without script, WebGL or network errors",
+          "passed": true
+        }
+      ],
+      "errors": [],
+      "remote": []
+    },
+    "owner_references": {
+      "artifactSHA256": "09091cf38af17f21f73d5cc60a3f3c9aee2ba4107deb623fdfbde0b40a690f7e",
+      "checks": [
+        {
+          "name": "All three corrected rubber feet meet the ground; tripod geometry is finite",
+          "passed": true,
+          "vertices": 30776,
+          "minima": [
+            1.3583877946088396e-10,
+            1.3583877946088396e-10,
+            1.3583877946088396e-10
+          ],
+          "spreaderY": 0.493,
+          "legCount": 3,
+          "tipRadius": [
+            0.45,
+            0.44999999999999996,
+            0.45
+          ]
+        },
+        {
+          "name": "Cable terminates at the actual AUX sockets in 18 mount/latitude/pointing states",
+          "passed": true,
+          "error": 4.75098925995612e-16,
+          "states": 18
+        },
+        {
+          "name": "Orange Celestron axis logo survives every shell mode",
+          "passed": true
+        },
+        {
+          "name": "New tripod and foot presets, and corrected front camera view render",
+          "passed": true
+        },
+        {
+          "name": "All eleven owner photographs are embedded and captioned",
+          "passed": true
+        },
+        {
+          "name": "Photographed camera-cover ribs explode independently while the sensor stays aligned",
+          "passed": true
+        },
+        {
+          "name": "Owner-reference inspection works offline without render errors",
+          "passed": true
+        }
+      ],
+      "errors": [],
+      "remote": []
+    },
+    "cable_clearance": {
+      "artifactSHA256": "09091cf38af17f21f73d5cc60a3f3c9aee2ba4107deb623fdfbde0b40a690f7e",
+      "passed": true,
+      "configurations": 18,
+      "segmentsPerCurve": 150,
+      "intersections": []
+    },
+    "combined_view": {
+      "checks": [
+        "Public default combines capture and catalogue; three views, private tools absent",
+        "Log importer and raw log records excluded from public artifact",
+        "Capture, object and whole-sphere framing retain one active footprint in the same scene",
+        "Andromeda, Pleiades, Veil and Orion load embedded photographs",
+        "Searchable catalogue exposes all 49 photographed targets",
+        "Continuous mouse-wheel zoom works within the combined scene",
+        "Combined view works with both mount configurations",
+        "3D tile centers coincide with their calculated celestial directions",
+        "Telescope wiring, optics and return to full sky remain accessible",
+        "Combined controls fit desktop and laptop sizes",
+        "Offline public browser validation: no script errors or external requests"
+      ],
+      "errors": [],
+      "externalRequests": []
+    }
+  },
+  "publication_privacy": {
+    "embedded_images_unchanged": 78,
+    "image_GPS_tags": 0,
+    "private_importer_in_public_build": false,
+    "imported_log_data_in_public_build": false
+  },
+  "testing_environment": "Headless desktop Chrome / Playwright, offline static HTML; hardware/model comparisons and rendered screenshots.",
+  "installed_smoke": {
+    "checks": [
+      "Installed Desktop shortcut loads B62 and real log replay; sensor waits for and counts actual captured frames",
+      "Prepared public entry point loads the combined sky and target photos without private tools or external requests"
+    ],
+    "errors": [],
+    "external_requests": []
+  }
+}

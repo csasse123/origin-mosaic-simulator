@@ -1,32 +1,23 @@
 # Origin Mosaic Simulator
 
-An interactive simulation of how Celestron Origin plans and captures a mosaic.
+An interactive tutorial for Celestron Origin mosaic capture, mount geometry and RASA optics.
 
-**Live:** https://csasse123.github.io/origin-mosaic-simulator/
+**[Open the live simulator](https://csasse123.github.io/origin-mosaic-simulator/)**
 
-The current published version is the **b61 tutorial studio**, with StarSense AutoGuider on both mounts, SSAG-to-tube AUX2 wiring, an explicit mount AUX1-to-tube AUX1 coil, and refined equatorial-wedge hardware. New **StarSense guider** and **Wiring & AUX** presets expose the details. The orange axis logo, shell controls, detailed optics and original optical/mosaic calculations are preserved. See `B61_MODEL.md` for the photo/source audit and reconstruction limits.
+The current published version is **B62**. Its default **Capture a tile + sky** view combines the telescope, one active tile, target imagery and 5,070 catalogue stars in one 3D scene. Orbit and zoom between the instrument, target and whole celestial sphere. Search 49 photographed targets, with quick buttons for Andromeda, the Pleiades, the Veil and Orion.
 
-Or download [origin_mosaic_simulator_b61.html](origin_mosaic_simulator_b61.html) and open it in any browser.
-Single self-contained file — no install, no build step, no network access needed.
+[Download the self-contained B62 HTML](origin_mosaic_simulator_b62.html) to open it directly without a build step, server or network connection.
 
 ## Using it
 
-- **01 · Telescope** opens the complete instrument, shell controls, mount selection and reference photographs.
-- **StarSense guider** and **Wiring & AUX** show the accessory and labeled cable connections in either mount configuration.
-- **04 · RASA optics** opens the optical diagram and detailed camera dissection.
+- **01 · Telescope** opens the complete instrument, shell transparency/removal, both mounts and reference photos. **StarSense guider** and **Wiring & AUX** expose the SSAG and cable connections.
+- **02 · Capture a tile + sky** is the default. **Capture**, **Object** and **Full sky** frame different scales of the same scene. Drag to orbit and scroll to zoom; the 2D overview retains capture history.
+- **03 · RASA optics** shows the optical path, three lenses, filter drawer and front-facing sensor. **Camera dissection & capture controls** exposes the 678C assembly. Exploding the optical train pauses the ray trace; reassembling restores it.
+- **Play** advances the normal tutorial capture. Width, height and orientation controls retain the existing planning calculations. The Andromeda and Veil presets remain available.
 
-- **Complete path** shows the assembled optical train; **Front optics ×4** exposes the three lenses, glass windows and sensor.
-- **Explode diagram** separates the components; **Reassemble** restores optical alignment.
-- **Camera dissection & capture controls** opens the detailed 678C views and filter drawer controls.
-- **02 · Capture a tile** returns to the original mosaic workflow; **03 · Celestial sphere** opens the catalogue sky.
+See [B62_MODEL.md](B62_MODEL.md) for this revision and [B61_MODEL.md](B61_MODEL.md) for hardware references and reconstruction limits. Private log-authoring tools belong to the owner's separate Desktop copy and are not included in this public page.
 
-- **Play** runs the capture. Tiles light up one by one as they are exposed.
-- **Box width / height** set the requested field; the tile count follows.
-- **Mosaic orientation** and **camera angle on sky** set the grid and chip angles.
-- **Follow the scope** switches to a merged view from the telescope's own axis.
-- Two preset buttons load real capture runs — Andromeda (3x5) and Eastern Veil (4x5).
-
-Built by Christian Sasse. Tutorial studio updated September 2026.
+Built by Christian Sasse. Updated September 2026.
 
 ## Model notes (b55)
 
